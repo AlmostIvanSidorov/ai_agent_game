@@ -27,7 +27,7 @@ This is a test game created to improve programming skills using Python and Pygam
 
 2. Set environment variables for screen dimensions (e.g., SCREEN_WIDTH=800, SCREEN_HEIGHT=600)
 
-3. Run the game: `python GnomesCatsGame.py`
+3. Run the game: `python ncb.py`
 
 ## Files
 
