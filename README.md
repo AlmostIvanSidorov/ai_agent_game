@@ -31,7 +31,7 @@ This is a test game created to improve programming skills using Python and Pygam
 
 ## Files
 
-- `GnomesCatsGame.py`: Main game loop and logic
+- `ncb.py`: Main game loop and logic
 - `game_classes.py`: Defines game classes (Player, Enemy, Cloud)
 - `requirements.txt`: Python dependencies
 - `sprites/`: Directory containing game assets (images and sounds)
