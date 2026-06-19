@@ -25,7 +25,7 @@ This is a test game created to improve programming skills using Python and Pygam
 
 1. Install required dependencies: `pip install -r requirements.txt`
 
-2. Set environment variables for screen dimensions (e.g., SCREEN_WIDTH=800, SCREEN_HEIGHT=600)
+2. Set environment variables for screen dimensions. Defaults are 900×700 if unset. Use `source setvar.sh` to set 800×800, or set manually: `SCREEN_WIDTH=800 SCREEN_HEIGHT=800`
 
 3. Run the game: `python ncb.py`
 
@@ -39,22 +39,25 @@ This is a test game created to improve programming skills using Python and Pygam
 ## Controls
 
 - Arrow keys (UP, DOWN, LEFT, RIGHT) to move Naruto
+- Mouse click to interact with menu buttons (Start, Restart, Exit)
 - ESC key to exit the game
 
 ## Features
 
+- Menu screen with Start and Exit buttons
+- Game Over screen with Restart and Exit buttons
+- Player has 3 lives; getting hit triggers a brief invincibility period with blink effect
 - Player movement with boundary checking
 - Randomly generated enemies (kunai)
 - Randomly generated clouds in background
 - Sound effects for movement and collisions
-- Background music
+- Background music (Naruto Theme)
 - Collision detection between player and enemies
-- Score tracking (based on survival time)
 
 ## Future Improvements
 
 - Add AI for enemies to follow the player
-- Implement scoring system
+- Add a visible scoring/survival time display
 - Add power-ups
 - Improve graphics and animations
 - Add multiple levels
