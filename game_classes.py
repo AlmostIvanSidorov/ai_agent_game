@@ -13,8 +13,8 @@ from pygame.locals import (
     QUIT,
 )
 
-screen_width = int(os.getenv("SCREEN_WIDTH"))
-screen_height = int(os.getenv("SCREEN_HEIGHT"))
+screen_width = int(os.getenv("SCREEN_WIDTH", "900"))
+screen_height = int(os.getenv("SCREEN_HEIGHT", "700"))
 
 
 def shutdown_func(game=True):
@@ -88,7 +88,7 @@ class Enemy(pygame.sprite.Sprite):
             )
         )
 
-        self.speed = random.randint(1, 5)
+        self.speed = random.randint(1, 2)
 
     def update(self):
         self.rect.move_ip(-self.speed, 0)

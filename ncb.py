@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Here are we start again!
-import time
+import random
 
 import pygame.sprite
 import pygame.font
@@ -88,6 +88,9 @@ def main():
     kunai_surf = pygame.image.load("sprites/kunai.png").convert()
     kunai_surf.set_colorkey((0, 0, 0), RLEACCEL)
     kunai_surf = pygame.transform.scale(kunai_surf, (50, 50))
+    heart_surf = pygame.image.load("sprites/heart.png").convert()
+    heart_surf.set_colorkey((255, 255, 255), RLEACCEL)
+    heart_surf = pygame.transform.scale(heart_surf, (30, 30))
     player_1 = Player(move_up_sound, move_down_sound)
 
     all_sprites_upper = pygame.sprite.Group()
@@ -97,7 +100,7 @@ def main():
 
     ADDENEMY = pygame.USEREVENT + 1
 
-    pygame.time.set_timer(ADDENEMY, 250)
+    pygame.time.set_timer(ADDENEMY, 500)
 
     ADDECLOUD = pygame.USEREVENT + 2
 
@@ -105,6 +108,9 @@ def main():
 
     game_state = 'menu'
     game_on = True
+    lives = 3
+    invincible = False
+    invincible_timer = 0
     start_button = None
     restart_button = None
     exit_button = None
@@ -123,20 +129,24 @@ def main():
                 mouse_pos = pygame.mouse.get_pos()
                 if game_state == 'menu' and start_button and start_button.collidepoint(mouse_pos):
                     game_state = 'playing'
-                    # Reset game
                     player_1 = Player(move_up_sound, move_down_sound)
                     enemies.empty()
                     clouds.empty()
                     all_sprites_upper.empty()
                     all_sprites_lower.empty()
+                    lives = 3
+                    invincible = False
+                    invincible_timer = 0
                 elif game_state == 'game_over' and restart_button and restart_button.collidepoint(mouse_pos):
                     game_state = 'playing'
-                    # Reset game
                     player_1 = Player(move_up_sound, move_down_sound)
                     enemies.empty()
                     clouds.empty()
                     all_sprites_upper.empty()
                     all_sprites_lower.empty()
+                    lives = 3
+                    invincible = False
+                    invincible_timer = 0
                 elif exit_button and exit_button.collidepoint(mouse_pos):
                     game_on = False
 
@@ -163,39 +173,47 @@ def main():
                         all_sprites_lower.add(new_cloud)
 
         if game_state == 'playing':
-            # Get all the keys currently pressed
-
             pressed_keys = pygame.key.get_pressed()
 
-            # Update the player sprite based on user keypresses
-
             player_1.update(pressed_keys)
-
-            # Update enemy position
 
             enemies.update()
             clouds.update()
 
-            screen.fill((135, 206, 250))
+            if invincible:
+                invincible_timer -= 1
+                if invincible_timer <= 0:
+                    invincible = False
 
-            # Draw all sprites
+            screen.fill((135, 206, 250))
 
             for entity in all_sprites_lower:
                 screen.blit(entity.surf, entity.rect)
 
-            screen.blit(player_1.surf, player_1.rect)
+            if not invincible or invincible_timer % 4 < 2:
+                screen.blit(player_1.surf, player_1.rect)
 
             for entity in all_sprites_upper:
                 screen.blit(entity.surf, entity.rect)
 
-            # Check if any enemies have collided with the player
+            for i in range(lives):
+                x = screen_width - (i + 1) * (30 + 10)
+                screen.blit(heart_surf, (x, 10))
 
             if pygame.sprite.spritecollideany(player_1, enemies):
-                game_state = 'game_over'
-                player_1.kill()
-                move_up_sound.stop()
-                move_down_sound.stop()
-                collision_sound.play()
+                if not invincible:
+                    lives -= 1
+                    invincible = True
+                    invincible_timer = 60
+                    collision_sound.play()
+                    hit_enemy = pygame.sprite.spritecollideany(player_1, enemies)
+                    if hit_enemy:
+                        hit_enemy.kill()
+                    if lives <= 0:
+                        game_state = 'game_over'
+                        player_1.kill()
+                        move_up_sound.stop()
+                        move_down_sound.stop()
 
         elif game_state == 'menu':
             start_button, exit_button = draw_menu(screen, font, cloud_surf, naruto_surf, mouse_pos)
