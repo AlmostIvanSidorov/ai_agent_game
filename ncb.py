@@ -68,9 +68,9 @@ def main():
 
     pygame.mixer.music.play(loops=-1)
 
-    move_up_sound = pygame.mixer.Sound("sprites/jumping.wav")
+    move_right_sound = pygame.mixer.Sound("sprites/jumping.wav")
 
-    move_down_sound = pygame.mixer.Sound("sprites/jumping.wav")
+    move_left_sound = pygame.mixer.Sound("sprites/jumping.wav")
 
     collision_sound = pygame.mixer.Sound("sprites/hit.wav")
 
@@ -91,7 +91,7 @@ def main():
     heart_surf = pygame.image.load("sprites/heart.png").convert()
     heart_surf.set_colorkey((255, 255, 255), RLEACCEL)
     heart_surf = pygame.transform.scale(heart_surf, (30, 30))
-    player_1 = Player(move_up_sound, move_down_sound)
+    player_1 = Player()
 
     all_sprites_upper = pygame.sprite.Group()
     all_sprites_lower = pygame.sprite.Group()
@@ -124,12 +124,17 @@ def main():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     game_on = False
+                if game_state == 'playing':
+                    if event.key == K_RIGHT:
+                        move_right_sound.play()
+                    elif event.key == K_LEFT:
+                        move_left_sound.play()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if game_state == 'menu' and start_button and start_button.collidepoint(mouse_pos):
                     game_state = 'playing'
-                    player_1 = Player(move_up_sound, move_down_sound)
+                    player_1 = Player()
                     enemies.empty()
                     clouds.empty()
                     all_sprites_upper.empty()
@@ -139,7 +144,7 @@ def main():
                     invincible_timer = 0
                 elif game_state == 'game_over' and restart_button and restart_button.collidepoint(mouse_pos):
                     game_state = 'playing'
-                    player_1 = Player(move_up_sound, move_down_sound)
+                    player_1 = Player()
                     enemies.empty()
                     clouds.empty()
                     all_sprites_upper.empty()
@@ -212,8 +217,8 @@ def main():
                     if lives <= 0:
                         game_state = 'game_over'
                         player_1.kill()
-                        move_up_sound.stop()
-                        move_down_sound.stop()
+                        move_right_sound.stop()
+                        move_left_sound.stop()
 
         elif game_state == 'menu':
             start_button, exit_button = draw_menu(screen, font, cloud_surf, naruto_surf, mouse_pos)

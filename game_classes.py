@@ -31,19 +31,19 @@ def shutdown_func(game=True):
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, move_up_sound, move_down_sound):
+    _surf = None
+
+    def __init__(self):
 
         super(Player, self).__init__()
 
-        self.surf = pygame.image.load("sprites/naruto.png").convert()
+        if Player._surf is None:
+            Player._surf = pygame.image.load("sprites/naruto.png").convert()
+            Player._surf.set_colorkey((0, 0, 0), RLEACCEL)
 
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        self.surf = Player._surf
 
         self.rect = self.surf.get_rect()
-
-        self.move_up_sound = move_up_sound
-
-        self.move_down_sound = move_down_sound
 
     def update(self, pressed_keys):
 
@@ -58,7 +58,6 @@ class Player(pygame.sprite.Sprite):
 
         if pressed_keys[K_RIGHT]:
             self.rect.move_ip(10, 0)
-            self.move_up_sound.play()
 
         if self.rect.left < 0:
             self.rect.left = 0
@@ -74,12 +73,16 @@ class Player(pygame.sprite.Sprite):
 
 
 class Enemy(pygame.sprite.Sprite):
+    _surf = None
+
     def __init__(self):
         super(Enemy, self).__init__()
 
-        self.surf = pygame.image.load("sprites/kunai.png").convert()
+        if Enemy._surf is None:
+            Enemy._surf = pygame.image.load("sprites/kunai.png").convert()
+            Enemy._surf.set_colorkey((0, 0, 0), RLEACCEL)
 
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        self.surf = Enemy._surf
 
         self.rect = self.surf.get_rect(
             center=(
@@ -99,13 +102,17 @@ class Enemy(pygame.sprite.Sprite):
 
 class Cloud(pygame.sprite.Sprite):
 
+    _surf = None
+
     def __init__(self):
 
         super(Cloud, self).__init__()
 
-        self.surf = pygame.image.load("sprites/cloud.png").convert()
+        if Cloud._surf is None:
+            Cloud._surf = pygame.image.load("sprites/cloud.png").convert()
+            Cloud._surf.set_colorkey((0, 0, 0), RLEACCEL)
 
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        self.surf = Cloud._surf
 
         # The starting position is randomly generated
 
