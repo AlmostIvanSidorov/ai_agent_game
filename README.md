@@ -29,12 +29,21 @@ This is a test game created to improve programming skills using Python and Pygam
 
 3. Run the game: `python ncb.py`
 
+## Testing
+
+Run the smoke test that launches the game headlessly and verifies initialization and clean exit:
+
+```bash
+python -m pytest
+```
+
 ## Files
 
 - `ncb.py`: Main game loop and logic
 - `game_classes.py`: Defines game classes (Player, Enemy, Cloud)
 - `requirements.txt`: Python dependencies
 - `sprites/`: Directory containing game assets (images and sounds)
+- `tests/`: Pytest smoke test for game launch
 
 ## Controls
 

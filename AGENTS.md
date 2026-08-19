@@ -27,6 +27,17 @@ python ncb.py
 
 - Only `pygame==2.6.1` (pinned in `requirements.txt`). No other packages.
 
-## Testing
+## Verification
 
-- No test suite exists.
+```bash
+pip install -r requirements.txt   # includes pytest
+python -m pytest
+```
+
+- `tests/test_launch.py` is a smoke test: it runs `ncb.main()` under `SDL_VIDEODRIVER=dummy` / `SDL_AUDIODRIVER=dummy` with a QUIT timer, verifying pygame init, all sprite/audio loading, and a clean exit. It does not cover game logic.
+- No lint or typecheck config exists.
+
+## Sprite gotchas
+
+- All sprites use a black colorkey `(0, 0, 0)` with `RLEACCEL`, except `heart.png` which uses white `(255, 255, 255)` (see `ncb.py` `main`). New sprites must match their actual background color.
+- `ncb.py` additionally loads and re-scales cloud/naruto/kunai/heart surfaces itself for menus and the HUD; the classes in `game_classes.py` load the same PNGs unscaled for in-game sprites.
